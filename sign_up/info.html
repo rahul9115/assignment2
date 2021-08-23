@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method=POST action="http://127.0.0.1:5000/info.html">
+    <label>Enter your name</label>
+    <input type="text" id="name" placeholder="name" name ="name" required>
+    <label>Enter your age</label>
+    <input type="number" id="age" placeholder="age" name="age" required>
+    <label>Enter your stream</label>
+    <input type="text" id="stream" placeholder="stream" name="stream" required>
+    <label>Enter your gender</label>
+    <input list="gender" id="stream" placeholder="gender" name="gender" required>
+    <input type="submit">
+    <datalist id="gender">
+        <option value="male">
+        <option value="female">
+        <option value="others">
+    </datalist>
+    </form>
+</body>
+
+<sc>
+</html>

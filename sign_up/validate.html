@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="submit" onclick="validation_check()">
+    
+</body>
+<script type="text/javascript">
+    function validation_check(){
+        
+    if( document.getElementById("username").value=="rahul" && document.getElementById("password").value=="vemuri"){
+        alert("Successfully validated");
+        location.href="info.html";
+    }else {
+        alert("Sorry invalid credentials");
+        location.href="validate.html";
+        
+    }
+}
+
+</script>
+</html>
