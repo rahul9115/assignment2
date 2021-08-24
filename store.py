@@ -1,9 +1,13 @@
 import pymysql
+import re
 from flask import Flask,render_template,request
 app=Flask(__name__,template_folder="sign_up")
-
+reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 @app.route("/",methods=["POST","GET"])
 def display():
+    return render_template("validate.html")
+@app.route("/",methods=["POST","GET"])
+def logout():
     return render_template("validate.html")
 @app.route("/validate",methods=["POST","GET"])
 def validate():
@@ -43,6 +47,47 @@ def validate():
             return render_template("info.html")
         else:
             return render_template("validate.html")
+
+@app.route("/regex",methods=["POST","GET"])
+def regex():
+    if request.method=="POST":
+        fname=request.form.get("first_name")
+        lname=request.form.get("last_name")
+        age=request.form.get("age")
+        email=request.form.get("email")
+        ac=request.form.get("area_code")
+        phone=request.form.get("phone")
+        subject=request.form.get("subject")
+        
+        b_age=False
+        b_email=False
+        b_phone=False
+        
+        if(b_age==False):
+            if b_age<0:
+                message="Please enter valid age"
+                return render_template("info.html",message=message)
+            else:
+                b_age=True
+        
+        if(b_email==False):
+            if(re.fullmatch(reg,email)):
+                b_email=True
+            else:
+                message="The email is not valid please enter again"
+                return render_template("info.html",message=message)
+        if(b_phone==False):
+            if len(phone)!=10:
+                message="Please enter 10 digit phone number"
+                return render_template("info.html",message=message)
+            else:
+                b_phone=True
+
+
+
+
+
+
 
 @app.route("/info.html",methods=["POST","GET"])
 
