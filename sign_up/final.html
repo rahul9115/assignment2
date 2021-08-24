@@ -7,9 +7,24 @@
     <title>Document</title>
 </head>
 <body>
+    <form action="{{ url_for('finish')}}" method="POST">
+    <div>
+        <select name="subject">
+            <option disabled="disabled" selected="selected">Choose option</option>
+            <option>Science</option>
+            <option>Maths</option>
+            <option>English</option>
+        </select>
+        <label>Select</label>>
+        <input type="submit">
+    </form>
+    </div>
     <ul id="navigation">
-        {% for item in navigation %}
-            <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+        {% for item in list %}
+            {% for value in item %}
+            <li>{{value  }}</li>
+            {% endfor %}
+        <br>    
         {% endfor %}
     </ul>
 </body>

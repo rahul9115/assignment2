@@ -50,12 +50,15 @@
                                         <div class="input-group-desc">
                                             <input class="input--style-5" type="text" name="first_name">
                                             <label class="label--desc">first name</label>
+                                            <label style="color: red;">{{message4}}</label>
                                         </div>
                                     </div>
                                     <div class="col-2">
                                         <div class="input-group-desc">
                                             <input class="input--style-5" type="text" name="last_name">
                                             <label class="label--desc">last name</label>
+                                            <label style="color: red;">{{message5}}</label>
+
                                         </div>
                                     </div>
                                 </div>
@@ -132,6 +135,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="name">Marks</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="number" name="marks">
+                                    <label style="color: red;">{{message3}}</label>
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <button class="btn btn--radius-2 btn--red" type="submit">Register</button>
                         </div>
@@ -140,7 +152,7 @@
             </div>
         </div>
     </div>
-
+    </form>
     <!-- Jquery JS-->
     <script src="{{ url_for('static',filename='vendor/jquery/jquery.min.js')}}"></script>
     <!-- Vendor JS-->

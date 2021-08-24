@@ -1,6 +1,7 @@
 import pymysql
 import re
 from flask import Flask,render_template,request
+streams=[]
 app=Flask(__name__,template_folder="sign_up")
 reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 @app.route("/",methods=["POST","GET"])
@@ -59,13 +60,29 @@ def regex():
         phone=request.form.get("phone")
         subject=request.form.get("subject")
         gender=request.form.get("gender")
-        
+        marks=request.form.get("marks")
+
+        b_fname=False
+        b_lname=False
         b_age=False
         b_email=False
         b_phone=False
+        b_marks=False
         message=""
+        if(b_fname==False):
+            if(any(map(str.isdigit,fname))):
+                message4="Please enter valid firstname"
+                return render_template("info.html",message4=message4)
+            else:
+                b_fname=True
+        if(b_lname==False):
+            if(any(map(str.isdigit,lname))):
+                message5="Please enter valid lastname"
+                return render_template("info.html",message5=message5)
+            else:
+                b_lname=True
         if(b_age==False):
-            if int(age)<0:
+            if int(age)<0 and int(age)>150:
                 message="Please enter valid age"
                 return render_template("info.html",message=message)
             else:
@@ -83,7 +100,13 @@ def regex():
                 return render_template("info.html",message2=message2)
             else:
                 b_phone=True
-        if(b_phone==True and b_email==True and b_age==True):
+        if(b_marks==False):
+            if(int(marks)<0 and int(marks)>100):
+                message3="Please enter marks between 0 to 100"
+                return render_template("info.html",message3=message3)
+            else:
+                b_marks=True    
+        if(b_fname==True and b_lname==True and b_phone==True and b_email==True and b_age==True and b_marks==True):
           
             
             conn = pymysql.connect(
@@ -96,6 +119,7 @@ def regex():
             cur.execute(f"select streamid from stream where stream_name='{subject}'")
             output = cur.fetchall()
             streamid=output[0][0]
+            
             cur = conn.cursor()
             #print(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
             cur.execute("select * from person")
@@ -109,7 +133,7 @@ def regex():
                 db='assignment2',
                 )
                 cur = conn.cursor()
-                cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
+                cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no,marks) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone},{marks})")
                 conn.commit()
                 return render_template("final.html")
             else:
@@ -121,14 +145,36 @@ def regex():
                 db='assignment2',
                 )
                 cur = conn.cursor()
-                cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
+                cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no,marks) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone},{marks})")
                 conn.commit()
                 return render_template("final.html")
     return render_template("info.html")
                 
-           
-            
-           
+
+
+
+        
+@app.route("/finish",methods=["POST","GET"])
+def finish():
+    if request.method=="POST":
+        subject=request.form.get("subject")
+        conn=pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
+
+        )
+        
+        cur=conn.cursor()
+        cur.execute(f"select streamid from stream where stream_name='{subject}'")
+        output = cur.fetchall()
+        streamid=output[0][0]
+        cur=conn.cursor()
+        cur.execute(f"select personid,fname,lname,marks from person where streamid={streamid}")
+        output = cur.fetchall()
+        return render_template("final.html",list=output)
+
 
 
 
