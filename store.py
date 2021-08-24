@@ -63,9 +63,9 @@ def regex():
         b_age=False
         b_email=False
         b_phone=False
-        
+        message=""
         if(b_age==False):
-            if b_age<0:
+            if int(age)<0:
                 message="Please enter valid age"
                 return render_template("info.html",message=message)
             else:
@@ -75,12 +75,12 @@ def regex():
             if(re.fullmatch(reg,email)):
                 b_email=True
             else:
-                message="The email is not valid please enter again"
-                return render_template("info.html",message=message)
+                message1="The email is not valid please enter again"
+                return render_template("info.html",message1=message1)
         if(b_phone==False):
             if len(phone)!=10:
-                message="Please enter 10 digit phone number"
-                return render_template("info.html",message=message)
+                message2="Please enter 10 digit phone number"
+                return render_template("info.html",message2=message2)
             else:
                 b_phone=True
         if(b_phone==True and b_email==True and b_age==True):
@@ -92,12 +92,16 @@ def regex():
             password = "rahul9115",
             db='assignment2',
             )
-        
+            cur=conn.cursor()
+            cur.execute(f"select streamid from stream where stream_name='{subject}'")
+            output = cur.fetchall()
+            streamid=output[0][0]
             cur = conn.cursor()
             #print(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
             cur.execute("select * from person")
             output = cur.fetchall()
-            if(len(output)>0):
+            if(len(output)==0):
+                print("in")
                 conn = pymysql.connect(
                 host='localhost',
                 user='root', 
@@ -105,9 +109,11 @@ def regex():
                 db='assignment2',
                 )
                 cur = conn.cursor()
-                cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,phn_no) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{phone})")
+                cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
                 conn.commit()
+                return render_template("final.html")
             else:
+                print("out")
                 conn = pymysql.connect(
                 host='localhost',
                 user='root', 
@@ -115,14 +121,14 @@ def regex():
                 db='assignment2',
                 )
                 cur = conn.cursor()
-                cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,phn_no) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{phone})")
+                cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
                 conn.commit()
-
+                return render_template("final.html")
+    return render_template("info.html")
                 
-            #cur.execute(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
+           
             
-            user=[]
-            passwd=[]
+           
 
 
 

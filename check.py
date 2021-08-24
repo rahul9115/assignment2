@@ -13,7 +13,7 @@ def mysqlconnect():
     cur.execute(f"select streamid from stream where stream_name='{subject}'")
     #cur.execute(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
     output = cur.fetchall()
-    print(output)
+    print(output[0][0])
     if(len(output)>0):
         print("great")
     else:
