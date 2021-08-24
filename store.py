@@ -58,6 +58,7 @@ def regex():
         ac=request.form.get("area_code")
         phone=request.form.get("phone")
         subject=request.form.get("subject")
+        gender=request.form.get("gender")
         
         b_age=False
         b_email=False
@@ -82,6 +83,46 @@ def regex():
                 return render_template("info.html",message=message)
             else:
                 b_phone=True
+        if(b_phone==True and b_email==True and b_age==True):
+          
+            
+            conn = pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
+            )
+        
+            cur = conn.cursor()
+            #print(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
+            cur.execute("select * from person")
+            output = cur.fetchall()
+            if(len(output)>0):
+                conn = pymysql.connect(
+                host='localhost',
+                user='root', 
+                password = "rahul9115",
+                db='assignment2',
+                )
+                cur = conn.cursor()
+                cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,phn_no) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{phone})")
+                conn.commit()
+            else:
+                conn = pymysql.connect(
+                host='localhost',
+                user='root', 
+                password = "rahul9115",
+                db='assignment2',
+                )
+                cur = conn.cursor()
+                cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,phn_no) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{phone})")
+                conn.commit()
+
+                
+            #cur.execute(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
+            
+            user=[]
+            passwd=[]
 
 
 
