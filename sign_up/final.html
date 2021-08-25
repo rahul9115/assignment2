@@ -7,6 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        nav{
+            width: 100%;
+            height:100px;
+            background-color: black;
+            left:0;
+            background-size: cover;
+        }
+        nav a{
+            margin-top: 10px;
+            color: white;
+            float: right;
+            margin-right: 10%;;
+            text-decoration: none;
+            font-size: 50px;
+        }
         .charts {
             display: flex;
             width: 100%;
@@ -17,19 +32,38 @@
             justify-content: space-between;
             max-width: 100%;
         }
+        table{
+         width: 100%; 
+         height: 500px;
+            
+        }
+        th,td{
+            border: 1px solid black;
+            text-align: center;
+        }
+        .sel{
+        width: 10%;
+        height: 10%;
+        margin:2%;
+        margin-left:40%;
+
+        }
     </style>
 </head>
 
 <body>
+    <nav>
+        <a href="">Logout</a>
+    </nav>
     <form action="{{ url_for('finish')}}" method="POST">
         <div>
-            <select name="subject">
+            <select name="subject" class="sel">
                 <option disabled="disabled" selected="selected">Choose option</option>
                 <option>Science</option>
                 <option>Maths</option>
                 <option>English</option>
             </select>
-            <label>Select</label>>
+            
             <input type="submit">
     </form>
     </div>
@@ -50,7 +84,7 @@
         </tr>
         {% endfor %}
     </table>
-    
+
     {% if message!=1 %}
     <div class="charts">
         <div id="chart" class="chart">
