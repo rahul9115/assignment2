@@ -38,14 +38,32 @@ def signup():
         username=request.form.get("username")
         password=request.form.get("password")
         rpassword=request.form.get("rpassword")
+        conn = pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
+            )
+        cur = conn.cursor()
+        cur.execute("select username from administrator")
+        output = cur.fetchall()
+        user=False
+        message5=""
+        message6=""
+        for i in output:
+            if(i[0]==username):
+                user=True
+        if user==True:
+            return render_template("validate.html",message5="Username already exists")
+
         print("This",password)
         if(password!=rpassword and len(password)>0):
             print("wohooo")
             message="Passwords dont match"
-            return render_template("validate.html",message=message)
+            return render_template("validate.html",message6=message)
         else:
-            encMessage = fernet.encrypt(password.encode())
-            print(f"{encMessage}")
+            
+            
             conn = pymysql.connect(
             host='localhost',
             user='root', 
