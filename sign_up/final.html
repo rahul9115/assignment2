@@ -27,15 +27,30 @@
         <br>    
         {% endfor %}
     </ul>
-    <div style="width: 90%;">
-        <div id="chart" class="chart"></div>
+    {% if message!=1 %}
+    <div style="width: 40%;">
+        <div id="chart" class="chart">
+            <div style="margin-left: 900px;margin-right: 900px;margin-top: -400px;"id="chart1"></div>
+
+        </div>
+        
     </div>
+    <div id=chart2 style="width: 90%;">
+
+    </div>
+    {% endif %}
+    
 </body>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script type="text/javascript">
     
   var graphs = {{ graphJSON | safe}};
+  var graph1={{ graphJSON1 | safe}};
+  var graph2={{ graphJSON2 | safe}}
   Plotly.plot("chart",graphs,{});
+  Plotly.plot("chart1",graph1,{});
+  Plotly.plot("chart2",graph2,{});
+  
 </script>
 
 </html>

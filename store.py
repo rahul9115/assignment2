@@ -173,7 +173,7 @@ def finish():
             db='assignment2',
 
         )
-        
+        message=0
         cur=conn.cursor()
         cur.execute(f"select streamid from stream where stream_name='{subject}'")
         output = cur.fetchall()
@@ -191,12 +191,18 @@ def finish():
             personid.append(i[0])
             name.append(i[1]+i[2])
             marks.append(i[3])
+        if not marks:
+            message=1
         data={"name":name,"marks":marks}
         df=pd.DataFrame(data=data)
         fig=px.bar(df,x="name",y="marks",title="Performance in science")
+        fig1=px.pie(df,values="marks",names="name",title="Performance in science")
+        fig2=px.line(df,x="name",y="marks",title="performance in science")
         plt.show()
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        return render_template("final.html",list=output,graphJSON=graphJSON)
+        graphJSON1 = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+        graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+        return render_template("final.html",list=output,graphJSON=graphJSON,graphJSON1=graphJSON1,graphJSON2=graphJSON2,message=message)
 
 
 
