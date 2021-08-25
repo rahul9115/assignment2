@@ -27,12 +27,14 @@
         <br>    
         {% endfor %}
     </ul>
-    <div id="chart" class="chart"></div>
+    <div style="width: 90%;">
+        <div id="chart" class="chart"></div>
+    </div>
 </body>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script type="text/javascript">
-    console.log({{graphJSON}});
-  var graphs = {{ graphJSON }};
+    
+  var graphs = {{ graphJSON | safe}};
   Plotly.plot("chart",graphs,{});
 </script>
 

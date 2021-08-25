@@ -8,6 +8,7 @@ import plotly.express as px
 import plotly
 import pandas as pd
 import json
+import matplotlib.pyplot as plt
 streams=[]
 app=Flask(__name__,template_folder="sign_up")
 reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -192,8 +193,8 @@ def finish():
             marks.append(i[3])
         data={"name":name,"marks":marks}
         df=pd.DataFrame(data=data)
-        fig=px.bar(df,x="name",y="marks")
-        print(df.head())
+        fig=px.bar(df,x="name",y="marks",title="Performance in science")
+        plt.show()
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         return render_template("final.html",list=output,graphJSON=graphJSON)
 
