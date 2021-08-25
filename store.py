@@ -1,6 +1,13 @@
 import pymysql
 import re
 from flask import Flask,render_template,request
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly.express as px
+import plotly
+import pandas as pd
+import json
 streams=[]
 app=Flask(__name__,template_folder="sign_up")
 reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -173,7 +180,22 @@ def finish():
         cur=conn.cursor()
         cur.execute(f"select personid,fname,lname,marks from person where streamid={streamid}")
         output = cur.fetchall()
-        return render_template("final.html",list=output)
+        cur=conn.cursor()
+        cur.execute(f"select personid,lname,fname,marks from person where streamid={streamid}")
+        output = cur.fetchall()
+        personid=[]
+        name=[]
+        marks=[]
+        for i in output:
+            personid.append(i[0])
+            name.append(i[1]+i[2])
+            marks.append(i[3])
+        data={"name":name,"marks":marks}
+        df=pd.DataFrame(data=data)
+        fig=px.bar(df,x="name",y="marks")
+        print(df.head())
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return render_template("final.html",list=output,graphJSON=graphJSON)
 
 
 
