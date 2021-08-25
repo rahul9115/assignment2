@@ -1,56 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .charts {
+            display: flex;
+            width: 100%;
+        }
+
+        .chart {
+            display: flex;
+            justify-content: space-between;
+            max-width: 100%;
+        }
+    </style>
 </head>
+
 <body>
     <form action="{{ url_for('finish')}}" method="POST">
-    <div>
-        <select name="subject">
-            <option disabled="disabled" selected="selected">Choose option</option>
-            <option>Science</option>
-            <option>Maths</option>
-            <option>English</option>
-        </select>
-        <label>Select</label>>
-        <input type="submit">
+        <div>
+            <select name="subject">
+                <option disabled="disabled" selected="selected">Choose option</option>
+                <option>Science</option>
+                <option>Maths</option>
+                <option>English</option>
+            </select>
+            <label>Select</label>>
+            <input type="submit">
     </form>
     </div>
-    <ul id="navigation">
+
+
+    <table>
+        <tr>
+            <th>personid</th>
+            <th>last name</th>
+            <th>first name</th>
+            <th>marks</th>
+        </tr>
         {% for item in list %}
+        <tr>
             {% for value in item %}
-            <li>{{value  }}</li>
+            <td>{{value }}</td>
             {% endfor %}
-        <br>    
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+    
     {% if message!=1 %}
-    <div style="width: 40%;">
+    <div class="charts">
         <div id="chart" class="chart">
-            <div style="margin-left: 900px;margin-right: 900px;margin-top: -400px;"id="chart1"></div>
+            <div id="chart1"></div>
 
         </div>
-        
+
     </div>
     <div id=chart2 style="width: 90%;">
 
     </div>
     {% endif %}
-    
+
 </body>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script type="text/javascript">
-    
-  var graphs = {{ graphJSON | safe}};
-  var graph1={{ graphJSON1 | safe}};
-  var graph2={{ graphJSON2 | safe}}
-  Plotly.plot("chart",graphs,{});
-  Plotly.plot("chart1",graph1,{});
-  Plotly.plot("chart2",graph2,{});
-  
+
+    var graphs = {{ graphJSON | safe}};
+    var graph1 = {{ graphJSON1 | safe}};
+    var graph2 = {{ graphJSON2 | safe}}
+    Plotly.plot("chart", graphs, {});
+    Plotly.plot("chart1", graph1, {});
+    Plotly.plot("chart2", graph2, {});
+
 </script>
 
 </html>
