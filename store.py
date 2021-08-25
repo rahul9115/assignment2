@@ -16,7 +16,7 @@ app=Flask(__name__,template_folder="sign_up")
 reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 @app.route("/",methods=["POST","GET"])
 def display():
-    return render_template("validate.html")
+    return render_template("validate.html",message="")
 @app.route("/",methods=["POST","GET"])
 def logout():
     return render_template("validate.html")
@@ -27,8 +27,9 @@ def signup():
         username=request.form.get("username")
         password=request.form.get("password")
         rpassword=request.form.get("rpassword")
+        print("This",password)
         if(password!=rpassword and len(password)>0):
-            print("in")
+            print("wohooo")
             message="Passwords dont match"
             return render_template("validate.html",message=message)
         else:
@@ -50,7 +51,7 @@ def signup():
                 cur.execute(f"insert into aministrator(username,password) values({username},{encMessage})")
                 conn.commit()
     
-        return render_template("validate.html")
+        return render_template("validate.html",message="")
             
 
 @app.route("/validate",methods=["POST","GET"])
@@ -90,7 +91,7 @@ def validate():
         if(u==True and p==True):
             return render_template("info.html")
         else:
-            return render_template("validate.html")
+            return render_template("validate.html",message="")
 
 @app.route("/regex",methods=["POST","GET"])
 def regex():
