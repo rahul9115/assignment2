@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from cryptography.fernet import Fernet
 key = Fernet.generate_key()
 fernet = Fernet(key)
-streams=[]
+
 app=Flask(__name__,template_folder="sign_up")
 reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 @app.route("/",methods=["POST","GET"])
@@ -98,8 +98,10 @@ def validate():
         cur = conn.cursor()
         cur.execute("select stream_name from stream")
         output=cur.fetchall()
+        streams=[]
         for i in output:
             streams.append(i[0])
+        print(streams)    
         if(u==True and p==True):
             return render_template("info.html",list=streams)
         else:
