@@ -9,7 +9,9 @@ import plotly
 import pandas as pd
 import json
 import matplotlib.pyplot as plt
-streams=[]
+from cryptography.fernet import Fernet
+key = Fernet.generate_key()
+fernet = Fernet(key)
 app=Flask(__name__,template_folder="sign_up")
 reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 @app.route("/",methods=["POST","GET"])
@@ -18,6 +20,39 @@ def display():
 @app.route("/",methods=["POST","GET"])
 def logout():
     return render_template("validate.html")
+@app.route("/signup",methods=["POST","GET"])
+def signup():
+    if request.method=="POST":
+        message=""
+        username=request.form.get("username")
+        password=request.form.get("password")
+        rpassword=request.form.get("rpassword")
+        if(password!=rpassword and len(password)>0):
+            print("in")
+            message="Passwords dont match"
+            return render_template("validate.html",message=message)
+        else:
+            encMessage = fernet.encrypt(password.encode())
+            conn = pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
+            )
+            cur = conn.cursor()
+            cur.execute("select * from administrator")
+            output = cur.fetchall()
+            if(len(output)==0):
+                cur = conn.cursor()
+                cur.execute(f"insert into aministrator values(1,{username},{encMessage})")
+            else:
+                cur = conn.cursor()
+                cur.execute(f"insert into aministrator(username,password) values({username},{encMessage})")
+                conn.commit()
+    
+        return render_template("validate.html")
+            
+
 @app.route("/validate",methods=["POST","GET"])
 def validate():
     print("in")
@@ -42,7 +77,7 @@ def validate():
         
         for i in output:
             user.append(i[0])
-            passwd.append(i[1])
+            passwd.append(fernet.decrypt(i[1]).decode())
         u=False
         p=False
         print(user,passwd)

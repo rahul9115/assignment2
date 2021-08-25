@@ -36,23 +36,25 @@
                     </div>
                 </div>
                 </form>
+                <form action="{{url_for('signup')}}" method="POST">
                 <div class="sign-up-htm">
                     <div class="group">
+                        <label style="color: red;">{{message}}</label>
                         <label for="user" class="label">Username</label>
-                        <input id="user" type="text" class="input">
+                        <input id="user" type="text" class="input" name=username required>
                     </div>
                     <div class="group">
                         <label for="pass" class="label">Password</label>
-                        <input id="pass" type="password" class="input" data-type="password">
+                        <input id="pass" type="password" class="input" data-type="password" name="password" required>
                     </div>
                     <div class="group">
                         <label for="pass" class="label">Repeat Password</label>
-                        <input id="pass" type="password" class="input" data-type="password">
+                        <input id="pass" type="password" class="input" data-type="password" name="rpassword" required>
                     </div>
-                    <div class="group">
+                    <!-- <div class="group">
                         <label for="pass" class="label">Email Address</label>
-                        <input id="pass" type="text" class="input">
-                    </div>
+                        <input id="pass" type="text" class="input" name="email">
+                    </div> -->
                     <div class="group">
                         <input type="submit" class="button" value="Sign Up">
                     </div>
@@ -61,6 +63,7 @@
                         <label for="tab-1">Already Member?</a>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
