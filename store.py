@@ -34,6 +34,7 @@ def signup():
             return render_template("validate.html",message=message)
         else:
             encMessage = fernet.encrypt(password.encode())
+            print(f"{encMessage}")
             conn = pymysql.connect(
             host='localhost',
             user='root', 
@@ -45,10 +46,13 @@ def signup():
             output = cur.fetchall()
             if(len(output)==0):
                 cur = conn.cursor()
-                cur.execute(f"insert into aministrator values(1,{username},{encMessage})")
+                cur.execute(f"insert into administrator values(1,{username},AES_ENCRYPT('{password}','password'))")
+                print(f"insert into administrator values(1,{username},AES_ENCRYPT('{password}','password')")
             else:
                 cur = conn.cursor()
-                cur.execute(f"insert into aministrator(username,password) values({username},{encMessage})")
+                print(f"insert into administrator values(1,{username},AES_ENCRYPT('{password}','password')")
+                cur.execute(f'insert into administrator(username,password) values("{username}",AES_ENCRYPT("{password}","password"))')
+                
                 conn.commit()
     
         return render_template("validate.html",message="")
@@ -70,15 +74,17 @@ def validate():
       
         cur = conn.cursor()
         #print(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
-        cur.execute("select username,password from administrator")
+        cur.execute("select username,cast(AES_decrypt(password,'password') as char) from administrator")
         #cur.execute(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
         output = cur.fetchall()
+        print("validation output",output)
         user=[]
         passwd=[]
         
         for i in output:
             user.append(i[0])
-            passwd.append(fernet.decrypt(i[1]).decode())
+            
+            passwd.append(i[1])
         u=False
         p=False
         print(user,passwd)
