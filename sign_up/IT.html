@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/signup.css')}}">
+
     <style>
         nav{
             width: 100%;
@@ -27,10 +28,34 @@
     <nav>
         <a href="{{url_for('logout')}}">Logout</a>
     </nav>
-    <label>Introduction to programming.</label>
-    <label>Engineering Mechanics</label>
-    <label>Data Structures and Algorithms</label>
-    <label>Engineering Mathematics.</label>
+    <label></label>
     
+    <label></label>
+    <label>Operating System</label>
+    <label>Computer Networks</label>
+    <form  action="{{ url_for('display1')}}"class="con" method="POST" style="margin-top: 100px;">
+        <div class="container">
+          <h1 style="margin-right: 200px;">All sub streams</h1>
+          
+          <hr>
+      
+          <label for="email" style="padding: 10px;margin-left: 200px;">Data Structures and Algorithms.</b></label>
+          <input type="number" placeholder="Enter Marks" name="m1" required>
+          
+          <label for="email" style="padding: 10px;margin-left: 210px;">Engineering Mathematics.</b></label>
+          <input type="number" placeholder="Enter Marks" name="m2" required>
+          
+          <label for="email" style="padding: 10px;margin-left: 190px;"><b>Basic Electronics.</b></label>
+          <input type="number" placeholder="Enter Marks" name="m3" required>
+      
+          <label for="psw"  style="padding: 50px;margin-left: 140px;"><b>Introduction to programming.</b></label>
+          <input type="number" placeholder="Enter Marks" name="m4" required>
+          
+         
+         <button type="submit" class="registerbtn" >Analyze</button>
+        
+        </div>
+      </form>
+
 </body>
 </html>
