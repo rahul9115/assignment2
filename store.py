@@ -22,9 +22,7 @@ reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 @app.route("/",methods=["POST","GET"])
 def display():
-    session["values"]=[]
-    session["values"].append(False)
-    session["values"].append(False)
+    
     return render_template("validate.html",message="")
 @app.route("/",methods=["POST","GET"])
 def logout():
@@ -112,6 +110,9 @@ def validate():
         cur.execute("select stream_name from stream")
         output=cur.fetchall()
         streams=[]
+        session["values"]=[]
+        session["values"].append(False)
+        session["values"].append(False)
         for i in output:
             streams.append(i[0])
         print(streams)    
