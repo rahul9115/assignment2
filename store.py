@@ -111,15 +111,22 @@ def validate():
         cur.execute("select stream_name from stream")
         output=cur.fetchall()
         streams=[]
-        
+        message=""
+        message1=""
+        message2=""
 
         for i in output:
             streams.append(i[0])
         print(streams)    
         if(u==True and p==True):
             return render_template("info.html",list=streams)
+        elif(u==False and p==True):
+            return render_template("validate.html",message="Invalid username")
+        elif(u==True and p==False):
+            return render_template("validate.html",message1="Invalid password")
         else:
-            return render_template("validate.html",message="")
+            return render_template("validate.html",message2="Invalid username and password")
+
 
 @app.route("/regex",methods=["POST","GET"])
 def regex():
