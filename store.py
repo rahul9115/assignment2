@@ -1,6 +1,6 @@
 import pymysql
 import re
-from flask import Flask,render_template,request,session
+from flask import Flask,render_template,request,session,redirect
 from flask_session import Session
 import dash
 import dash_core_components as dcc
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from cryptography.fernet import Fernet
 key = Fernet.generate_key()
 fernet = Fernet(key)
-
+subjects=[]
 app=Flask(__name__,template_folder="sign_up")
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -24,6 +24,7 @@ reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 def display():
     session["values"][0]=False
     session["values"][1]=False
+    session["email"]=[]
     return render_template("validate.html",message="")
 @app.route("/",methods=["POST","GET"])
 def logout():
@@ -159,8 +160,9 @@ def regex():
             phone=request.form.get("phone")
             subject=request.form.get("subject")
             gender=request.form.get("gender")
-            marks=request.form.get("marks")
-            print(fname,lname,age,email,marks,subject) 
+            session["email"].append(email)
+            print("wola",session["email"][0])
+            
             b_fname=False
             b_lname=False
             b_age=False
@@ -204,15 +206,10 @@ def regex():
                     
                 else:
                     b_phone=True
-            if(b_marks==False):
-                if(int(marks)<0 or int(marks)>100):
-                    message3="Please enter marks between 0 to 100"
-                    
-                else:
-                    b_marks=True    
+            
             print("here")
             print(b_fname,b_fname,b_age,b_email,b_marks,b_marks)        
-            if(b_fname==True and b_lname==True and b_phone==True and b_email==True and b_age==True and b_marks==True):
+            if(b_fname==True and b_lname==True and b_phone==True and b_email==True and b_age==True):
             
                 
                 conn = pymysql.connect(
@@ -239,7 +236,7 @@ def regex():
                     db='assignment2',
                     )
                     cur = conn.cursor()
-                    cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no,marks) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone},{marks})")
+                    cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
                     conn.commit()
                     cur = conn.cursor()
                     cur.execute("select stream_name from stream")
@@ -248,7 +245,12 @@ def regex():
                     for i in output:
                         streams.append(i[0])
                     print(streams)    
-                    return render_template("final.html",list1=streams)
+                    if subject=="CSE":
+                        return render_template("CSE.html")
+                    elif(subject=="ECE"):
+                        return render_template("ECE.html")
+                    else:
+                        return render_template("IT.html")
                 else:
                     print("out")
                     conn = pymysql.connect(
@@ -258,7 +260,7 @@ def regex():
                     db='assignment2',
                     )
                     cur = conn.cursor()
-                    cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no,marks) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone},{marks})")
+                    cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
                     conn.commit()
                     cur = conn.cursor()
                     cur.execute("select stream_name from stream")
@@ -266,37 +268,70 @@ def regex():
                     streams=[]
                     for i in output:
                         streams.append(i[0])
-                    print(streams)    
-                    return render_template("final.html",list1=streams)
+                    print(streams)
+                    print("inside")
+                    print("subject",subject)
+                    if subject=="CSE":
+                        return render_template("CSE.html")
+                    elif(subject=="ECE"):
+                        return render_template("ECE.html")
+                    else:
+                        return render_template("IT.html")
+
             else:
-                return render_template("info.html",message1=message1,message2=message2,message=message,message3=message3,message4=message4,message5=message5)
+                conn = pymysql.connect(
+                    host='localhost',
+                    user='root', 
+                    password = "rahul9115",
+                    db='assignment2',
+                    )
+                cur = conn.cursor()
+                cur.execute("select stream_name from stream")
+                output=cur.fetchall()
+                streams=[]
+                for i in output:
+                    streams.append(i[0])
+                print(streams)    
+                return render_template("info.html",message1=message1,message2=message2,message=message,message4=message4,message5=message5,list=streams)
     
         
                 
 
 
 
-@app.route("/display1")
+@app.route("/display1",methods=["POST","GET"])
 def display1():
     if(session["values"][0]==True and session["values"][1]==True):
-        conn=pymysql.connect(
-                host='localhost',
-                user='root', 
-                password = "rahul9115",
-                db='assignment2',
-
+        if request.method=="POST":
+            m1=request.form.get("m1")
+            m2=request.form.get("m2")
+            m3=request.form.get("m3")
+            m4=request.form.get("m4")
+            total=int(m1)+int(m2)+int(m3)+int(m4)
+            conn=pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
             )
-        
-        cur=conn.cursor()
-        cur.execute("select stream_name from stream")
-        output=cur.fetchall()
-        streams=[]
-        for i in output:
-            streams.append(i[0])
-        print(streams)   
-        return render_template("final.html",list1=streams)
-    else:
-        return render_template("validate.html")      
+            cur=conn.cursor()
+            cur.execute("SET SQL_SAFE_UPDATES = 0;")
+            cur=conn.cursor()
+            cur.execute("select stream_name from stream")
+            output=cur.fetchall()
+            streams=[]
+            cur=conn.cursor()
+            email=session["email"][-1]
+            print("Email is",email,"total is",total)
+            cur.execute(f"update person set marks={total} where email='{email}'")
+            conn.commit()
+            for i in output:
+                streams.append(i[0])
+            print(streams)
+
+            return render_template("final.html",list1=streams)
+        else:
+            return render_template("validate.html")      
 @app.route("/finish",methods=["POST","GET"])
 def finish():
     if(session["values"][0]==True and session["values"][1]==True):
@@ -331,9 +366,9 @@ def finish():
                 message=1
             data={"name":name,"marks":marks}
             df=pd.DataFrame(data=data)
-            fig=px.bar(df,x="name",y="marks",title="Performance in science")
-            fig1=px.pie(df,values="marks",names="name",title="Performance in science")
-            fig2=px.line(df,x="name",y="marks",title="performance in science")
+            fig=px.bar(df,x="name",y="marks",title=f"Performance in {streamid}")
+            fig1=px.pie(df,values="marks",names="name",title=f"Performance in {streamid}")
+            fig2=px.line(df,x="name",y="marks",title=f"Performance in {streamid}")
             plt.show()
             graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
             graphJSON1 = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)

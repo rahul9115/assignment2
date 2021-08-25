@@ -1,0 +1,85 @@
+
+
+/* Add padding to containers */
+.con{
+    top:50%;
+    left:50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 100px;
+    margin-bottom: 150px;
+    margin-top: 20px;
+    
+}
+.container {
+  padding: 16px;
+  width: 70%;
+  background-color: #003366 ;
+  
+ 
+}
+p{
+    color: white;
+}
+h1{
+    color:white;
+    text-decoration: underline;
+    padding-left: 150px;
+}
+
+/* Full-width input fields */
+input[type=number] {
+  width: 70%;
+  padding: 50px;
+  margin: 50px 0 22px 0;
+  margin-left: 20px;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+  
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit/register button */
+.registerbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  opacity: 0.9;
+ margin-left: 30px;
+}
+
+.registerbtn:hover {
+  opacity:1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+
+label{
+    color:white;
+    
+}
