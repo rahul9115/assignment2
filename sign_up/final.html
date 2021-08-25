@@ -72,9 +72,9 @@
         <div>
             <select name="subject" class="sel">
                 <option disabled="disabled" selected="selected">Choose option</option>
-                <option>Science</option>
-                <option>Maths</option>
-                <option>English</option>
+                {% for stream in list1 %}
+                <option>{{ stream }}</option>
+                {% endfor %}
             </select>
             
             <input type="submit">

@@ -193,7 +193,14 @@ def regex():
                 cur = conn.cursor()
                 cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no,marks) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone},{marks})")
                 conn.commit()
-                return render_template("final.html")
+                cur = conn.cursor()
+                cur.execute("select stream_name from stream")
+                output=cur.fetchall()
+                streams=[]
+                for i in output:
+                    streams.append(i[0])
+                print(streams)    
+                return render_template("final.html",list1=streams)
             else:
                 print("out")
                 conn = pymysql.connect(
@@ -205,13 +212,37 @@ def regex():
                 cur = conn.cursor()
                 cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no,marks) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone},{marks})")
                 conn.commit()
-                return render_template("final.html")
-    return render_template("info.html")
+                cur = conn.cursor()
+                cur.execute("select stream_name from stream")
+                output=cur.fetchall()
+                streams=[]
+                for i in output:
+                    streams.append(i[0])
+                print(streams)    
+                return render_template("final.html",list1=streams)
+    
                 
 
 
 
-        
+@app.route("/display1")
+def display1():
+    conn=pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
+
+        )
+    
+    cur=conn.cursor()
+    cur.execute("select stream_name from stream")
+    output=cur.fetchall()
+    streams=[]
+    for i in output:
+        streams.append(i[0])
+    print(streams)   
+    return render_template("final.html",list1=streams)       
 @app.route("/finish",methods=["POST","GET"])
 def finish():
     if request.method=="POST":
@@ -252,7 +283,13 @@ def finish():
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         graphJSON1 = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
         graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-        return render_template("final.html",list=output,graphJSON=graphJSON,graphJSON1=graphJSON1,graphJSON2=graphJSON2,message=message)
+        cur.execute("select stream_name from stream")
+        output1=cur.fetchall()
+        streams=[]
+        for i in output1:
+            streams.append(i[0])
+        print(streams)   
+        return render_template("final.html",list=output,graphJSON=graphJSON,graphJSON1=graphJSON1,graphJSON2=graphJSON2,message=message,list1=streams)
 
 
 
