@@ -22,7 +22,8 @@ reg=r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 @app.route("/",methods=["POST","GET"])
 def display():
-    
+    session["values"][0]=False
+    session["values"][1]=False
     return render_template("validate.html",message="")
 @app.route("/",methods=["POST","GET"])
 def logout():
