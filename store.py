@@ -28,9 +28,12 @@ def display():
     return render_template("validate.html",message="")
 @app.route("/",methods=["POST","GET"])
 def logout():
+    session["values"][0]=False
+    session["values"][1]=False
     return render_template("validate.html")
 @app.route("/signup",methods=["POST","GET"])
 def signup():
+    
     if request.method=="POST":
         message=""
         username=request.form.get("username")
