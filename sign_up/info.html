@@ -41,7 +41,7 @@
                     <h2 class="title">Person Registration</h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{url_for('regex')}}">
+                    <form  action="{{url_for('regex')}}" method="POST">
                         <div class="form-row m-b-55">
                             <div class="name">Name</div>
                             <div class="value">
@@ -140,7 +140,7 @@
                             <div class="name">Marks</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="number" name="marks">
+                                    <input class="input--style-5" type="number" name="marks" required>
                                     <label style="color: red;">{{message3}}</label>
                                 </div>
                             </div>

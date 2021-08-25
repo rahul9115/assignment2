@@ -110,9 +110,8 @@ def validate():
         cur.execute("select stream_name from stream")
         output=cur.fetchall()
         streams=[]
-        session["values"]=[]
-        session["values"].append(False)
-        session["values"].append(False)
+        
+
         for i in output:
             streams.append(i[0])
         print(streams)    
@@ -123,6 +122,7 @@ def validate():
 
 @app.route("/regex",methods=["POST","GET"])
 def regex():
+    print(session["values"][0],session["values"][1])
     if(session["values"][0]==True and session["values"][1]==True):
         if request.method=="POST":
             fname=request.form.get("first_name")
@@ -134,7 +134,7 @@ def regex():
             subject=request.form.get("subject")
             gender=request.form.get("gender")
             marks=request.form.get("marks")
-
+            print(fname,lname,age,email,marks,subject) 
             b_fname=False
             b_lname=False
             b_age=False
@@ -142,22 +142,27 @@ def regex():
             b_phone=False
             b_marks=False
             message=""
+            message1=""
+            message2=""
+            message3=""
+            message4=""
+            message5=""
             if(b_fname==False):
                 if(any(map(str.isdigit,fname))):
                     message4="Please enter valid firstname"
-                    return render_template("info.html",message4=message4)
+                    
                 else:
                     b_fname=True
             if(b_lname==False):
                 if(any(map(str.isdigit,lname))):
                     message5="Please enter valid lastname"
-                    return render_template("info.html",message5=message5)
+                    
                 else:
                     b_lname=True
             if(b_age==False):
-                if int(age)<0 and int(age)>150:
+                if int(age)<0 or int(age)>150:
                     message="Please enter valid age"
-                    return render_template("info.html",message=message)
+                    
                 else:
                     b_age=True
             
@@ -166,19 +171,21 @@ def regex():
                     b_email=True
                 else:
                     message1="The email is not valid please enter again"
-                    return render_template("info.html",message1=message1)
+                    
             if(b_phone==False):
                 if len(phone)!=10:
                     message2="Please enter 10 digit phone number"
-                    return render_template("info.html",message2=message2)
+                    
                 else:
                     b_phone=True
             if(b_marks==False):
-                if(int(marks)<0 and int(marks)>100):
+                if(int(marks)<0 or int(marks)>100):
                     message3="Please enter marks between 0 to 100"
-                    return render_template("info.html",message3=message3)
+                    
                 else:
                     b_marks=True    
+            print("here")
+            print(b_fname,b_fname,b_age,b_email,b_marks,b_marks)        
             if(b_fname==True and b_lname==True and b_phone==True and b_email==True and b_age==True and b_marks==True):
             
                 
@@ -235,8 +242,10 @@ def regex():
                         streams.append(i[0])
                     print(streams)    
                     return render_template("final.html",list1=streams)
-    else:
-        return render_template("validate.html")    
+            else:
+                return render_template("info.html",message1=message1,message2=message2,message=message,message3=message3,message4=message4,message5=message5)
+    
+        
                 
 
 
