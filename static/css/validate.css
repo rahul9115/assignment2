@@ -3,6 +3,8 @@ body{
 	color:#6a6f8c;
 	background:#c8c8c8;
 	font:600 16px/18px 'Open Sans',sans-serif;
+	
+	
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
@@ -147,4 +149,11 @@ a{color:inherit;text-decoration:none}
 }
 .foot-lnk{
 	text-align:center;
+}
+body{
+	background-image: url("bg1.jpg");
+	background-repeat: none;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
 }
