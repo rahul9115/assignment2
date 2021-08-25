@@ -48,14 +48,14 @@
                                 <div class="row row-space">
                                     <div class="col-2">
                                         <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="first_name">
+                                            <input class="input--style-5" type="text" name="first_name" required>
                                             <label class="label--desc">first name</label>
                                             <label style="color: red;">{{message4}}</label>
                                         </div>
                                     </div>
                                     <div class="col-2">
                                         <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="last_name">
+                                            <input class="input--style-5" type="text" name="last_name" required>
                                             <label class="label--desc">last name</label>
                                             <label style="color: red;">{{message5}}</label>
 
@@ -68,7 +68,7 @@
                             <div class="name">Age   </div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="number" name="age">
+                                    <input class="input--style-5" type="number" name="age" required>
                                     <label style="color: red;">{{message}}</label>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                             <div class="name">Email</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="email" name="email">
+                                    <input class="input--style-5" type="email" name="email" required>
                                     <label style="color: red;">{{message1}}</label>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="col-9">
                                         <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="phone">
+                                            <input class="input--style-5" type="text" name="phone" required>
                                             <label class="label--desc">Phone Number</label>
                                             <label style="color: red;">{{message2}}</label>
                                         </div>
@@ -108,11 +108,12 @@
                             <div class="value">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="subject">
+                                        <select name="subject" required>
                                             <option disabled="disabled" selected="selected">Choose option</option>
-                                            <option>Science</option>
-                                            <option>Maths</option>
-                                            <option>English</option>
+                                            {% for stream in list %}
+                                            <option>stream</option>
+                                            {% endfor %}
+                                            
                                         </select>
                                         <div class="select-dropdown"></div>
                                     </div>
