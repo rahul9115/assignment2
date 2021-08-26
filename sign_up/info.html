@@ -50,7 +50,7 @@
                                         <div class="input-group-desc">
                                             <input class="input--style-5" type="text" name="first_name" required>
                                             <label class="label--desc">first name</label>
-                                            <label style="color: red;padding: 2px;">{{message4}}</label>
+                                            <label style="color: red;margin-top:100px;padding: 2px;">{{message4}}</label>
                                         </div>
                                     </div>
                                     <div class="col-2">
@@ -109,12 +109,13 @@
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
                                         <select name="subject" required>
-                                            <option disabled="disabled" selected="selected">Choose option</option>
+                                            <option disabled="disabled" selected="selected" required>Choose option</option>
                                             {% for stream in list %}
                                             <option>{{ stream }}</option>
                                             {% endfor %}
                                             
                                         </select>
+                                        <label style="color: red; padding: 2px;">{{message7}}</label>
                                         <div class="select-dropdown"></div>
                                     </div>
                                 </div>
@@ -125,12 +126,13 @@
                             <div class="value">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="gender">
-                                            <option disabled="disabled" selected="selected">Choose option</option>
+                                        <select name="gender" required>
+                                            <option disabled="disabled" selected="selected" >Choose option</option>
                                             <option>Male</option>
                                             <option>Female</option>
                                             <option>Others</option>
                                         </select>
+                                        <label style="color: red; padding: 2px;">{{message6}}</label>
                                         <div class="select-dropdown"></div>
                                     </div>
                                 </div>

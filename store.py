@@ -90,7 +90,8 @@ def signup():
 
 @app.route("/validate",methods=["POST","GET"])
 def validate():
-    print("in")
+    print(session["values"][0],session["values"][1])
+    
     if request.method=="POST":
         username=request.form.get("username")
         password=request.form.get("password")
@@ -101,7 +102,7 @@ def validate():
         password = "rahul9115",
         db='assignment2',
         )
-      
+    
         cur = conn.cursor()
         #print(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
         cur.execute("select username,cast(AES_decrypt(password,'password') as char) from administrator")
@@ -126,6 +127,7 @@ def validate():
         print(u,p)
         session["values"][0]=u
         session["values"][1]=p
+        
         cur = conn.cursor()
         cur.execute("select stream_name from stream")
         output=cur.fetchall()
@@ -145,11 +147,13 @@ def validate():
             return render_template("validate.html",message1="Invalid password")
         else:
             return render_template("validate.html",message2="Invalid username and password")
+    else:
+        return render_template("validate.html")
 
 
 @app.route("/regex",methods=["POST","GET"])
 def regex():
-    print(session["values"][0],session["values"][1])
+    
     if(session["values"][0]==True and session["values"][1]==True):
         if request.method=="POST":
             fname=request.form.get("first_name")
@@ -161,7 +165,7 @@ def regex():
             subject=request.form.get("subject")
             gender=request.form.get("gender")
             session["email"].append(email)
-            print("wola",session["email"][0])
+            print("wola",gender)
             
             b_fname=False
             b_lname=False
@@ -169,6 +173,8 @@ def regex():
             b_email=False
             b_phone=False
             b_marks=False
+            b_gender=False
+            b_subject=False
             message=""
             message1=""
             message2=""
@@ -206,38 +212,96 @@ def regex():
                     
                 else:
                     b_phone=True
-            
-            print("here")
-            print(b_fname,b_fname,b_age,b_email,b_marks,b_marks)        
-            if(b_fname==True and b_lname==True and b_phone==True and b_email==True and b_age==True):
-            
+            if (b_gender==False):
+                if(gender is None):
+                    message6="Please select the gender"
+                else:
+                    b_gender=True
+            if(b_subject==False):
+                if(subject is None):
+                    message7="Please select the stream"
+                else:
+                    b_subject=True
+
                 
-                conn = pymysql.connect(
-                host='localhost',
-                user='root', 
-                password = "rahul9115",
-                db='assignment2',
-                )
-                cur=conn.cursor()
-                cur.execute(f"select streamid from stream where stream_name='{subject}'")
-                output = cur.fetchall()
-                streamid=output[0][0]
+                print("here")
+                print(b_fname,b_fname,b_age,b_email,b_marks,b_marks)        
+                if(b_fname==True and b_lname==True and b_phone==True and b_email==True and b_age==True and b_subject==True and b_gender==True):
                 
-                cur = conn.cursor()
-                #print(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
-                cur.execute("select * from person")
-                output = cur.fetchall()
-                if(len(output)==0):
-                    print("in")
+                    
                     conn = pymysql.connect(
                     host='localhost',
                     user='root', 
                     password = "rahul9115",
                     db='assignment2',
                     )
+                    cur=conn.cursor()
+                    cur.execute(f"select streamid from stream where stream_name='{subject}'")
+                    output = cur.fetchall()
+                    streamid=output[0][0]
+                    
                     cur = conn.cursor()
-                    cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
-                    conn.commit()
+                    #print(f"insert into user_information(name,age,stream,gender) values('{name}',{age},'{stream}','{gender}');")
+                    cur.execute("select * from person")
+                    output = cur.fetchall()
+                    if(len(output)==0):
+                        print("in")
+                        conn = pymysql.connect(
+                        host='localhost',
+                        user='root', 
+                        password = "rahul9115",
+                        db='assignment2',
+                        )
+                        cur = conn.cursor()
+                        cur.execute(f"insert into person(personid,adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
+                        conn.commit()
+                        cur = conn.cursor()
+                        cur.execute("select stream_name from stream")
+                        output=cur.fetchall()
+                        streams=[]
+                        for i in output:
+                            streams.append(i[0])
+                        print(streams)    
+                        if subject=="CSE":
+                            return render_template("CSE.html")
+                        elif(subject=="ECE"):
+                            return render_template("ECE.html")
+                        else:
+                            return render_template("IT.html")
+                    else:
+                        print("out")
+                        conn = pymysql.connect(
+                        host='localhost',
+                        user='root', 
+                        password = "rahul9115",
+                        db='assignment2',
+                        )
+                        cur = conn.cursor()
+                        cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
+                        conn.commit()
+                        cur = conn.cursor()
+                        cur.execute("select stream_name from stream")
+                        output=cur.fetchall()
+                        streams=[]
+                        for i in output:
+                            streams.append(i[0])
+                        print(streams)
+                        print("inside")
+                        print("subject",subject)
+                        if subject=="CSE":
+                            return render_template("CSE.html")
+                        elif(subject=="ECE"):
+                            return render_template("ECE.html")
+                        else:
+                            return render_template("IT.html")
+
+                else:
+                    conn = pymysql.connect(
+                        host='localhost',
+                        user='root', 
+                        password = "rahul9115",
+                        db='assignment2',
+                        )
                     cur = conn.cursor()
                     cur.execute("select stream_name from stream")
                     output=cur.fetchall()
@@ -245,55 +309,9 @@ def regex():
                     for i in output:
                         streams.append(i[0])
                     print(streams)    
-                    if subject=="CSE":
-                        return render_template("CSE.html")
-                    elif(subject=="ECE"):
-                        return render_template("ECE.html")
-                    else:
-                        return render_template("IT.html")
-                else:
-                    print("out")
-                    conn = pymysql.connect(
-                    host='localhost',
-                    user='root', 
-                    password = "rahul9115",
-                    db='assignment2',
-                    )
-                    cur = conn.cursor()
-                    cur.execute(f"insert into person(adminid,fname,lname,age,gender,email,streamid,phn_no) values(1,'{fname}','{lname}',{int(age)},'{gender}','{email}',{streamid},{phone})")
-                    conn.commit()
-                    cur = conn.cursor()
-                    cur.execute("select stream_name from stream")
-                    output=cur.fetchall()
-                    streams=[]
-                    for i in output:
-                        streams.append(i[0])
-                    print(streams)
-                    print("inside")
-                    print("subject",subject)
-                    if subject=="CSE":
-                        return render_template("CSE.html")
-                    elif(subject=="ECE"):
-                        return render_template("ECE.html")
-                    else:
-                        return render_template("IT.html")
-
-            else:
-                conn = pymysql.connect(
-                    host='localhost',
-                    user='root', 
-                    password = "rahul9115",
-                    db='assignment2',
-                    )
-                cur = conn.cursor()
-                cur.execute("select stream_name from stream")
-                output=cur.fetchall()
-                streams=[]
-                for i in output:
-                    streams.append(i[0])
-                print(streams)    
-                return render_template("info.html",message1=message1,message2=message2,message=message,message4=message4,message5=message5,list=streams)
-    
+                    return render_template("info.html",message1=message1,message2=message2,message=message,message4=message4,message5=message5,message6=message6,message7=message7,list=streams)
+        else:
+            return render_template("validate.html")
         
                 
 
