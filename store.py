@@ -166,7 +166,19 @@ def regex():
             gender=request.form.get("gender")
             session["email"].append(email)
             print("wola",gender)
-            
+            conn = pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
+            )
+            cur = conn.cursor()
+            cur.execute("select email from person")
+            output=cur.fetchall()
+            emai=False
+            for i in output:
+                if(email==i[0]):
+                    emai=True
             b_fname=False
             b_lname=False
             b_age=False
@@ -181,6 +193,8 @@ def regex():
             message3=""
             message4=""
             message5=""
+            message6=""
+            message7=""
             if(b_fname==False):
                 if(any(map(str.isdigit,fname))):
                     message4="Please enter valid firstname"
@@ -201,7 +215,9 @@ def regex():
                     b_age=True
             
             if(b_email==False):
-                if(re.fullmatch(reg,email)):
+                if emai==True:
+                    message1="The email already exists"
+                elif(re.fullmatch(reg,email)):
                     b_email=True
                 else:
                     message1="The email is not valid please enter again"
@@ -312,6 +328,8 @@ def regex():
                     return render_template("info.html",message1=message1,message2=message2,message=message,message4=message4,message5=message5,message6=message6,message7=message7,list=streams)
         else:
             return render_template("validate.html")
+    else:
+        return render_template("validate.html")
         
                 
 
@@ -348,8 +366,9 @@ def display1():
             print(streams)
 
             return render_template("final.html",list1=streams)
-        else:
-            return render_template("validate.html")      
+    else:
+        return render_template("validate.html")
+          
 @app.route("/finish",methods=["POST","GET"])
 def finish():
     if(session["values"][0]==True and session["values"][1]==True):
@@ -382,11 +401,11 @@ def finish():
                 marks.append(i[3])
             if not marks:
                 message=1
-            data={"name":name,"marks":marks}
+            data={"personid":personid,"marks":marks}
             df=pd.DataFrame(data=data)
-            fig=px.bar(df,x="name",y="marks",title=f"Performance in {streamid}")
-            fig1=px.pie(df,values="marks",names="name",title=f"Performance in {streamid}")
-            fig2=px.line(df,x="name",y="marks",title=f"Performance in {streamid}")
+            fig=px.bar(df,x="personid",y="marks",title=f"Performance in {subject}")
+            fig1=px.pie(df,values="marks",names="personid",title=f"Performance in {subject}")
+            fig2=px.line(df,x="personid",y="marks",title=f"Performance in {subject}")
             plt.show()
             graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
             graphJSON1 = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
