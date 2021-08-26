@@ -366,6 +366,22 @@ def display1():
             print(streams)
 
             return render_template("final.html",list1=streams)
+        else:
+            conn=pymysql.connect(
+            host='localhost',
+            user='root', 
+            password = "rahul9115",
+            db='assignment2',
+            )
+            
+            cur=conn.cursor()
+            cur.execute("select stream_name from stream")
+            output=cur.fetchall()
+            streams=[]
+            
+            for i in output:
+                streams.append(i[0])
+            return render_template("final.html",list1=streams)
     else:
         return render_template("validate.html")
           
